@@ -1,0 +1,107 @@
+/*
+Copyright (C) 2016 pj
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
+    Created on : 04.02.2016, 0:38:40
+    Author     : pj
+*/
+
+.project {
+  width: 970px;
+  margin: 0 auto;
+}
+
+.project h1 {
+  margin-bottom: 20px;
+}
+
+.photo {
+  width: 650px;
+  height: 300px;
+  float: left;
+  overflow: hidden;
+}
+
+.info {
+  float: left;
+  width: 320px;
+  height: 300px;
+  background-color: #101010;
+  color: white;
+  padding: 20px;
+  font-family: PT Sans, Arial;
+}
+.odometer {
+//  padding: 20px;
+  font-weight: bold;
+  font-size: 42px;
+  line-height: 1em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.progressbar {
+  height: 5px;
+  background-color: grey;
+}
+.curr_progress {
+  height: 100%;
+  background-color: #00ff00;
+  border-right: 2px solid #ff0000;
+}
+
+.info ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.info ul li {
+  width: 50%;
+  float: left;
+  padding: 20px 0;
+}
+
+.infobox .string {
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
+
+.infobox .value {
+  font-size: 18px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.info a.donnate {
+  display: block;
+  margin: 0 auto;
+  background-color: green;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 1.5em;
+}
+
+.descr {
+  padding-top: 10px;
+}
+
+.clear {
+  clear: both;
+}
