@@ -18,18 +18,19 @@
  */
 
 /**
- * Description of index
+ * Description of successpay
  *
  * @author pj
  */
 
-use yii\helpers\Html;
-//vd($project,1);
+/*
+vd(['get' => Yii::$app->getRequest()->getQueryParams() ,
+    'post' => Yii::$app->request->getBodyParams()],1);
+ * 
+ */
+
 ?>
 
-<div class="project_donnate">
-  <h1><?php echo yii::t('app/project','Donnate for').' «'.$project->name.'»' ?></h1>
-  <div>
-    <iframe frameborder="0" allowtransparency="true" scrolling="no" src="https://money.yandex.ru/embed/donate.xml?account=410011424722348&quickpay=donate&payment-type-choice=on&mobile-payment-type-choice=on&default-sum=350&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0&target-visibility=on&project-name=pon4ik&project-site=pon4ik.pj&button-text=05&fio=on&mail=on&successURL=http%3A%2F%2Fpon4ik.pj%2Findex.php%3Fr%3Dorder%252Fsuccesspay%26project%3D1" width="509" height="117"></iframe>
-  </div>
-</div>
+<h1>Завершение платежа</h1>
+<div>Спасибо за поддержку!</div>
+

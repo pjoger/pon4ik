@@ -36,4 +36,13 @@ class OrderController extends Controller
         'project' => $project_data,
       ]);
     }
+
+    public function actionSuccesspay($project)
+    {
+      $project_data = Project::findOne($project);
+      return $this->render('successpay',[
+        'project' => $project_data,
+      ]);
+    }
+
 }
