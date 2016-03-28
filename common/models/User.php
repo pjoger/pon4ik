@@ -82,6 +82,42 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
+    public static function findByEmail($email)
+    {
+        return static::find()
+            ->where(['or', ['username' => $email], ['email' => $email]])
+            ->limit(1)
+            ->one();
+    }
+    public static function MakePass($length = 0,$strong = false)
+    {
+      $chars = '-+=*:$/123456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+      $min = $strong ? 8 : 5;
+      if ($length == 0){
+        $length = rand(8,12);
+      } else if ($length < $min){
+        $length = $min;
+      }
+      $pwd='';
+      if ($strong){
+        $max = strlen($chars)-1;
+        for($i=0; $i<$length; $i++){$pwd.=$chars{rand(0,$max)};}
+      } else {
+        $ll = [floor($length/2),1];
+        $ll[] = $length - $ll[0] - 1;
+        foreach ($ll as $l) {
+          if ($l == 1){
+            $min = 0;
+            $max = 6;
+          } else {
+            $min = 7;
+            $max = strlen($chars)-1;
+          }
+          for($i=0; $i<$l; $i++){$pwd.=$chars{rand($min,$max)};}
+        }
+      }
+      return $pwd;
+    }
     /**
      * Finds user by password reset token
      *

@@ -1,0 +1,50 @@
+/*
+ * Copyright (C) 2016 pj
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+$(document).on("submit", '#order-form', function (e) {
+    e.preventDefault();
+    var form = $(this);
+    console.log(form.serialize());
+    //return false;
+    $.ajax({
+//      url: "submitsignup",
+      url: form.attr('action'),
+      type: "POST",
+      data: form.serialize(),
+      success: function (res) {
+        console.log(res);
+        //r = JSON.parse(res);
+        //console.log(r);
+        if (res.status == 'ok'){
+          var yd_form = $('#yd-form');
+          console.log(yd_form);
+          if (yd_form.length){
+            var ydf_els = yd_form[0].elements;
+            ydf_els.customerNumber.value = res.user;
+            ydf_els.orderNumber.value = res.order;
+            ydf_els.sum.value = res.sum;
+            yd_form.submit();
+            // yd_form.attr('action')
+          }
+        } else if (res.status == 'err'){
+          alert('Ошибка: ' + res.error);
+        } else {
+          alert('Unknown error');
+        }
+      }
+    });
+  });

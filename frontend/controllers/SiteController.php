@@ -13,6 +13,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use common\models\Project;
+
 /**
  * Site controller
  */
@@ -72,7 +74,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+      $project = Project::findOne(1);
+      return $this->render('index', [
+        'project' => $project,
+        'persons' => $project->getOrders()
+                             ->where('closed_at IS NOT NULL')
+                             ->select('user_id')
+                             ->distinct()
+                             ->count(),
+      ]);
     }
 
     /**

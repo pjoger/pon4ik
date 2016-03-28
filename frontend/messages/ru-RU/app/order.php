@@ -17,29 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Description of successpay
- *
- * @author pj
- */
-
-/*
-vd(['get' => Yii::$app->getRequest()->getQueryParams() ,
-    'post' => Yii::$app->request->getBodyParams()],1);
- *
- */
-
-?>
-
-<h1>Завершение платежа</h1>
-<div>Спасибо за поддержку!</div>
-<?php
-  vd(['success',$project]);
-?>
-    <form name="test" action="/index.php?r=order%2Fsuccesspay&project=1&t=xxx" method="POST">
-      <input type="hidden" name="action" value="test"/>
-      <input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
-      <input type="text" name="t" value="ger"/><br/>
-      <input type="submit" name="OK" value="OK2"/>
-    </form>
-
+return [
+    'Unknown project' => 'Неизвестный проект',
+];

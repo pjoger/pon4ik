@@ -16,11 +16,11 @@ class m160124_115923_orders extends Migration
         $this->createTable($this->TableName, [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull()->defaultValue(0),
-            'type' => $this->smallInteger(2)->notNull()->defaultValue(0),
+            'type' => $this->smallInteger(2)->notNull()->defaultValue(1),
             'price' => $this->integer()->notNull()->defaultValue(0),
             'transaction' => $this->string(64),
             'created_at' => Schema::TYPE_TIMESTAMP.' NOT NULL default CURRENT_TIMESTAMP',
-            'closed_at' => $this->timestamp(),
+            'closed_at' => Schema::TYPE_TIMESTAMP.' NULL',
             'error_msg' => $this->string(256),
         ], $tableOptions);
         $this->createIndex(

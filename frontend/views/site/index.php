@@ -1,53 +1,76 @@
 <?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+//use yii\widgets\LinkPager;
+//use yii\i18n\Formatter;
+$this->registerCssFile('/css/project_view.css');
 
-/* @var $this yii\web\View */
+Yii::$app->formatter->numberFormatterOptions = [
+  NumberFormatter::MIN_FRACTION_DIGITS => 0,
+  NumberFormatter::MAX_FRACTION_DIGITS => 0,
+];
 
-$this->title = 'My Yii Application';
+$this->title = 'Проект по сбору средств на проект по сбору средств';
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+<div class="project">
+  <h1><?php echo $project->name ?></h1>
+  <div class="photo" style="background: url(/img/projects/<?php echo $project->id ?>.jpg) center center;">
+    <!-- <img src="/img/projects/1.jpg" width="770" height="300"/> -->
+  </div>
+  <div class="info">
+    <div class="odometer">
+      <?php
+        echo Yii::$app->formatter->asCurrency($project->collected,'RUB');
+      ?>
     </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+    <div class="progressbar">
+      <div class="curr_progress" style="width: <?php echo round(328*$project->collected/$project->price) ?>px;"></div>
+    </div>
+    <ul class="infobox">
+      <li>
+        <div class="string">
+          <?php echo yii::t('app/project','Required amount'); ?>
         </div>
-
-    </div>
+        <div class="value"><?php
+          echo Yii::$app->formatter->asCurrency($project->price,'RUB');
+        ?></div>
+      </li>
+      <li>
+        <div class="string">
+          <?php echo yii::t('app/project','Left'); ?>
+        </div>
+        <div class="value"><?php
+          $days = $project->daysLeft;
+          echo $days.' '.yii::t('app/project','{0, plural, one{day} other{days}}',$days);
+        ?></div>
+      </li>
+      <li>
+      <?php
+        echo '<div class="string">'
+                .yii::t('app/project','Suported')
+              .'</div>
+              <div class="value">'
+                .$persons.' '.yii::t('app/project','{0, plural, one{person} other{persons}}',$persons)
+              .'</div>';
+      ?>
+      </li>
+      <li>
+        <div class="string">
+          <?php echo yii::t('app/project','Started'); ?>
+        </div>
+        <div class="value"><?php
+          echo date('Y-m-d', strtotime($project->created_at));
+        ?></div>
+      </li>
+    </ul>
+    <div class='clear'></div>
+    <?=
+      Html::a(yii::t('app/project','Donnate'),
+              Url::toRoute(['order/index', 'project' => $project->id]),
+              ['class' => 'donnate']);
+    ?>
+  </div>
+  <div class="descr clear">
+    <p><?php echo $project->description ?></p>
+  </div>
 </div>
