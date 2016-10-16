@@ -21,9 +21,10 @@ namespace frontend\controllers;
 
 use DateTime;
 use Yii;
-use yii\web\Request;
-use yii\web\Response;
 use yii\web\Controller;
+use yii\data\Pagination;
+use yii\web\Response;
+use yii\web\Request;
 use common\models\User;
 use common\models\Project;
 use common\models\Order;
@@ -61,6 +62,31 @@ class OrderController extends Controller
           'order' => new Order(['project_id' => $project_data->id]),
           'signup' => \Yii::$app->user->isGuest ? new SignupForm : null,
       ]);
+    }
+
+    public function actionMy()
+    {
+      if (\Yii::$app->user->isGuest){
+        throw new NotFoundHttpException;
+      } else {
+        $query = Order::find()->where(['and', ['user_id' => \Yii::$app->user->getId()],['not', ['closed_at' => null]]]);
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
+
+        $orders = $query->with('project')->orderBy('closed_at DESC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+//        vd($orders);
+
+        return $this->render('my', [
+            'orders' => $orders,
+            'pagination' => $pagination,
+        ]);
+      }
     }
 
     public function actionSuccesspay()
