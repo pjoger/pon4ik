@@ -1,13 +1,13 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
-vd($projects);
+vd($companies);
 ?>
-<h1>Projects</h1>
+<h1>Companies</h1>
 <ul>
-<?php foreach ($projects as $project): ?>
+<?php foreach ($companies as $company): ?>
   <li>
-    <?= Html::encode("{$project->name} ({$project->created_at})") ?>:
+    <?= Html::encode("{$company->name} ({$company->created_at})") ?>:
     <?php /* $project->load */ ?>
   </li>
 <?php endforeach; ?>

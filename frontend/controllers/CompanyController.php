@@ -1,40 +1,45 @@
 <?php
 
 namespace frontend\controllers;
+//use Yii;
 use yii\web\Controller;
 use yii\web\Request;
 use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
-use common\models\Project;
+use common\models\Company;
 /**
  * Description of ProjectController
  *
  * @author pj
  */
-class ProjectController extends Controller
+class CompanyController extends Controller
 {
     public function actionIndex()
     {
-        $query = Project::findInProgress();
+      if (\Yii::$app->user->isGuest){
+        throw new NotFoundHttpException;
+      } else {
+        $query = Company::findByUser(\Yii::$app->user->getId());
 
         $pagination = new Pagination([
             'defaultPageSize' => 5,
             'totalCount' => $query->count(),
         ]);
 
-        $projects = $query->orderBy('created_at DESC')
+        $companies = $query->orderBy('created_at DESC')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
 
         return $this->render('index', [
-            'projects' => $projects,
+            'companies' => $companies,
             'pagination' => $pagination,
         ]);
+      }
     }
 
     public function actionView($id) {
-      $project = Project::findOne($id);
+      $company = Company::findOne($id);
 /*        ->select([
           'id','user_id', 'name', 'price', 'description', 'created_at',
           'DaysLeft'
@@ -57,39 +62,15 @@ class ProjectController extends Controller
 //var_dump($orders,2); die;
 //$orders = $project->daysLeft;
 //vd($project->orders->select()->count(),1); die;
-      if ($project === null) {
+      if ($company === null) {
         throw new NotFoundHttpException;
       }
 
       return $this->render('view', [
-        'project' => $project,
-        'persons' => $project->getOrders()->select('user_id')->distinct()->count(),
+        'company' => $company,
+        //'persons' => $project->getOrders()->select('user_id')->distinct()->count(),
       ]);
     }
-    public function actionMy() {
-      if (\Yii::$app->user->isGuest){
-        throw new NotFoundHttpException;
-      } else {
-        $query = Project::find();
-
-        $pagination = new Pagination([
-            'defaultPageSize' => 25,
-            'totalCount' => $query->count(),
-        ]);
-
-        $projects = $query->where(['user_id' => \Yii::$app->user->getId()])
-            ->orderBy('created_at DESC')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
-        return $this->render('my', [
-            'projects' => $projects,
-            'pagination' => $pagination,
-        ]);
-      }
-    }
-
     public function actionUpdate($id=0)
     {
 //      $out = ['status' => 'err', 'error' => 'Unknown error'];
@@ -98,26 +79,26 @@ class ProjectController extends Controller
       }
 
       $r = new Request;
-      if (isSet($r->post('Project')['id']) && $r->post('Project')['id']){
-        $id = $r->post('Project')['id'];
+      if ($r->post('Company')['id']){
+        $id = $r->post('Company')['id'];
       }
 //      vd($r->post('Company'));
       $userID = \Yii::$app->user->getId();
       if ($id){
-        $project = Project::findOne(['id' => $id, 'user_id' => $userID]);
+        $company = Company::findOne(['id' => $id, 'user_id' => $userID]);
       } else {
-        $project = new Project;
+        $company = new Company;
 //        \Yii::$app->session->setFlash('error', 'Company ID is required.');
 //        $this->redirect(array('view','id'=>$company));
 //        $this->redirect(array('index'));
 //        return;
       }
 //        vd($company);
-      if ($project){
-        if ($project->load($r->post())){
-          $project->user_id = $userID;
+      if ($company){
+        if ($company->load($r->post())){
+          $company->user_id = $userID;
 
-          if ($project->validate() && $project->save()) {
+          if ($company->validate() && $company->save()) {
             //vd([$r->post(),$order->attributes]);
 //          $out = [
 //            'status' => 'ok',
@@ -128,18 +109,18 @@ class ProjectController extends Controller
 //          $this->redirect(array('view','id'=>$company));
           } else {
 //          vd($company->errors);
-             \Yii::$app->session->setFlash('error', array_values($project->errors)[0][0]);
+             \Yii::$app->session->setFlash('error', array_values($company->errors)[0][0]);
 //          $out['error'] = array_values($order->errors)[0][0];
           //vd($order->errors);
          }
         }
       } else {
-        \Yii::$app->session->setFlash('error', 'Такой проект не существует');
-        $this->redirect(array('my'));
+        \Yii::$app->session->setFlash('error', 'Такой компании не существует');
+        $this->redirect(array('index'));
         return;
       }
       return $this->render('update', [
-        'project' => $project,
+        'company' => $company,
         //'persons' => $project->getOrders()->select('user_id')->distinct()->count(),
       ]);
 //      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -148,5 +129,4 @@ class ProjectController extends Controller
           'post' => $r->post(),
           'order' => $order],1); //*/
     }
-
 }
